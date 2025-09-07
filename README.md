@@ -1,5 +1,11 @@
 # otravez
 
-discord bot for frc things.
+Discord bot for frc things.
 
-named because I was listening to Hey DJ by CNCO and they said "otra vez"
+Named because I was listening to Hey DJ by CNCO and they said "otra vez".
+
+It's Spanish for "again".
+
+## Roadmap
+
+* [ ] Get team's attended events (`;comps 8884 2025`)
