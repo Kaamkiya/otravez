@@ -6,6 +6,5 @@ Named because I was listening to Hey DJ by CNCO and they said "otra vez".
 
 It's Spanish for "again".
 
-## Roadmap
-
-* [ ] Get team's attended events (`;comps 8884 2025`)
+Made with too much time that I should have been doing other things with, by Zia
+from 8884.

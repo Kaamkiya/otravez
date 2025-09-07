@@ -87,4 +87,23 @@ async def comps(ctx, *, args):
 
     await ctx.reply(reply)
 
+@bot.command()
+async def years(ctx, *, args):
+    """
+        Sends a list of years that a team participated in FRC.
+    """
+
+    try:
+        team, *_ = args.split()
+
+        years = tba.team_years(int(team))
+    except ValueError:
+        await ctx.reply("Usage: ;years [team]")
+
+    reply = "Years:"
+    for year in years:
+        reply += f"\n- {year}"
+
+    await ctx.reply(reply)
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
