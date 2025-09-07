@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import discord
 import logging
@@ -21,10 +22,6 @@ bot = commands.Bot(command_prefix=";", intents=intents)
 @bot.event
 async def on_ready():
     print(f"Yay bot has started! Named {bot.user.name}")
-
-@bot.event
-async def on_member_join(member):
-    await member.send(f"Welcome to the server {member.name}")
 
 @bot.event
 async def on_message(msg):
@@ -53,7 +50,7 @@ async def stat(ctx, *, args):
     try:
         int(team_number)
     except ValueError:
-        await ctx.reply("Invalid team number. Usage: ;stat [teamnum]")
+        await ctx.reply("Invalid team number. Usage: ;stat [team]")
 
     data = tba.team("frc" + team_number)
 
@@ -69,12 +66,25 @@ website: {data.website}""")
 
 @bot.command()
 async def comps(ctx, *, args):
-    try:
-        team, year, *args = args.split()
-        events = tba.team_events(int(team), int(year))
-    except ValueError:
-        await ctx.reply("Usage: ;comps [team] [year]")
+    """
+        Sends the competitions a given team attended in the given (or default)
+        year.
+    """
 
-    await ctx.reply(f"{len(events)}: {"\n".join(f"{ev.short_name} ({ev.event_code})" for ev in events)}")
+    try:
+        team, *args = args.split()
+
+        # if the user provided a year, use that, otherwise default to this year
+        year = int(args[0]) if len(args) > 0 else datetime.now().year
+
+        events = tba.team_events(int(team), year)
+    except ValueError:
+        await ctx.reply("Usage: ;comps [team] [optional: year]")
+
+    reply = f"{len(events)} in {year}:"
+    for ev in events:
+        reply += f"\n- {ev.short_name} ({ev.event_code})"
+
+    await ctx.reply(reply)
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
