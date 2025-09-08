@@ -157,12 +157,18 @@ async def leaderboard(ctx, *, args):
     ev_shortcode, *args = args.split()
     year = int(args[0]) if len(args) > 0 else datetime.now().year
 
-    rankings = tba.event_rankings(f"{year}{ev_shortcode}")["rankings"]
+    try:
+        rankings = tba.event_rankings(f"{year}{ev_shortcode}")["rankings"]
+    except:
+        await ctx.reply("Doesn't seem like there are rankings for this event...")
+        return
 
     reply = "Rankings:"
 
     for r in rankings:
-        reply += f"\n{r["rank"]}. {r["team_key"][3:]}"
+        rec = r["record"]
+        total_matches = rec["wins"] + rec["losses"] + rec["ties"]
+        reply += f"\n{r["rank"]}. {r["team_key"][3:]} - winrate {round(rec["wins"] / total_matches * 100, 2)}%"
 
     await ctx.reply(reply)
 

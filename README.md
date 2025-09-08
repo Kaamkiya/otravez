@@ -15,9 +15,9 @@ from 8884.
 
 ### Useful
 - [ ] lifetime stats (`;life 8884`)
-- [x] event stats (`;epa [event] 8884`)
+- [x] event stats (`;epa [event] 8884 [year]`)
 - [ ] competition year stats (`;year 8884`)
-- [ ] win rate (`;wlratio 8884` = `1000 played, 670 won = 67% win rate`)
+- [x] win rate (`;wlratio 8884` = `1000 played, 670 won = 67% win rate`)
 - [ ] awards (`;awards 8884`)
 - [ ] alliance nr and result (`;ally [event] 8884` = `alliance 1 capt, 2056 & 1114, came 1st`)
 
@@ -29,4 +29,4 @@ from 8884.
 
 ## Thanks to
 
-- [supercube08](https://github.com/supercube08) for a ton of suggestions.
+- [supercube08 (8884)](https://github.com/supercube08) for a ton of suggestions.
