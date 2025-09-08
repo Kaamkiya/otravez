@@ -4,6 +4,7 @@ from datetime import datetime
 import discord
 import logging
 import tbapy
+import statbotics
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -18,6 +19,7 @@ intents.message_content = True
 intents.members = True
 
 tba = tbapy.TBA(os.getenv("TBA_AUTH_KEY"))
+sb = statbotics.Statbotics()
 
 bot = commands.Bot(command_prefix=";", intents=intents)
 
@@ -129,6 +131,28 @@ async def epa(ctx, *, args):
             ...
             40. team in last | epa
     """
-    pass
+    team, ev_shortcode, *args = args.split()
+    year = int(args[0]) if len(args) > 0 else datetime.now().year
+
+    try:
+        team = int(team)
+    except ValueError:
+        await ctx.send("Invalid team number.")
+
+    try:
+        data = sb.get_team_event(team, f"{year}{ev_shortcode}")
+    except:
+        await ctx.send("Failed to get event data")
+
+    epa = data["epa"]["breakdown"]
+
+    # FIXME: This code is reefscape-specific. Write a function in utils.py that
+    # gets the correct value based on that year's gamepieces.
+    await ctx.send(f"""{data["team_name"]} at {data["event_name"]} - EPA
+Match avg: {epa["total_points"]}
+Avg coral points: {epa["total_coral_points"]}
+Avg algae points: {epa["total_algae_points"]}
+Avg gamepiece count: {epa["total_game_pieces"]}
+""")
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

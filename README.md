@@ -11,6 +11,8 @@ from 8884.
 
 ## Todo
 
+- [ ] Read correct values for EPA based on that year's gamepieces
+
 ### Useful
 - [ ] lifetime stats (`;life 8884`)
 - [ ] event stats (`;epa [event] 8884`)
