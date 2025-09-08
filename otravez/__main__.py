@@ -148,11 +148,6 @@ async def epa(ctx, *, args):
 
     # FIXME: This code is reefscape-specific. Write a function in utils.py that
     # gets the correct value based on that year's gamepieces.
-    await ctx.send(f"""{data["team_name"]} at {data["event_name"]} - EPA
-Match avg: {epa["total_points"]}
-Avg coral points: {epa["total_coral_points"]}
-Avg algae points: {epa["total_algae_points"]}
-Avg gamepiece count: {epa["total_game_pieces"]}
-""")
+    await ctx.send(f"{data["team_name"]} at {data["event_name"]}: {epa["total_points"]}")
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
