@@ -106,4 +106,21 @@ async def years(ctx, *, args):
 
     await ctx.reply(reply)
 
+@bot.command()
+async def epa(ctx, *, args):
+    """
+        Accepts an event code and team number, and returns the position of the
+        given team on the event leaderboard.
+
+        For example:
+            ;epa onosh 8884
+        Would return:
+            1. team in first | epa
+            ...
+            14. 8884 | epa
+            ...
+            40. team in last | epa
+    """
+    pass
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
