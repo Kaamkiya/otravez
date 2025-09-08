@@ -7,6 +7,8 @@ import tbapy
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from utils import to_ranges
+
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
 
@@ -100,9 +102,15 @@ async def years(ctx, *, args):
     except ValueError:
         await ctx.reply("Usage: ;years [team]")
 
+    year_ranges = list(to_ranges(years))
+
     reply = "Years:"
-    for year in years:
-        reply += f"\n- {year}"
+    for r in year_ranges:
+        if r[1] == r[0]:
+            reply += f"\n- {r[0]}"
+            continue
+
+        reply += f"\n- {r[0]}-{r[1]}"
 
     await ctx.reply(reply)
 
