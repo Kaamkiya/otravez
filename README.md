@@ -15,7 +15,7 @@ from 8884.
 
 ### Useful
 - [ ] lifetime stats (`;life 8884`)
-- [ ] event stats (`;epa [event] 8884`)
+- [x] event stats (`;epa [event] 8884`)
 - [ ] competition year stats (`;year 8884`)
 - [ ] win rate (`;wlratio 8884` = `1000 played, 670 won = 67% win rate`)
 - [ ] awards (`;awards 8884`)

@@ -146,8 +146,32 @@ async def epa(ctx, *, args):
 
     epa = data["epa"]["breakdown"]
 
-    # FIXME: This code is reefscape-specific. Write a function in utils.py that
-    # gets the correct value based on that year's gamepieces.
-    await ctx.send(f"{data["team_name"]} at {data["event_name"]}: {epa["total_points"]}")
+    await ctx.reply(f"{data["team_name"]} at {data["event_name"]}: {epa["total_points"]}")
+
+@bot.command()
+async def leaderboard(ctx, *, args):
+    """
+        Accepts an event code and year, and returns the leaderboard.
+    """
+
+    ev_shortcode, *args = args.split()
+    year = int(args[0]) if len(args) > 0 else datetime.now().year
+
+    rankings = tba.event_rankings(f"{year}{ev_shortcode}")["rankings"]
+
+    reply = "Rankings:"
+
+    for r in rankings:
+        reply += f"\n{r["rank"]}. {r["team_key"][3:]}"
+
+    await ctx.reply(reply)
+
+@bot.command()
+async def rankof(ctx, *, args):
+    """
+        Accepts a team number and event code and returns the ranking of the
+        team at the given event.
+    """
+    pass
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
