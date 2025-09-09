@@ -185,6 +185,21 @@ async def leaderboard(ctx, *, args):
     await ctx.reply(reply)
 
 @bot.command()
+async def winrate(ctx, *, args):
+    """
+        Accepts a team number. Returns the win ratio over their lifetime.
+    """
+
+    try:
+        team = int(args.split()[0])
+    except ValueError:
+        await ctx.send("Invalid team number")
+
+    data = sb.get_team(team)
+
+    await ctx.send(f"{team} win/loss ratio: {round(data["record"]["winrate"] * 100, 2)}%")
+
+@bot.command()
 async def rankof(ctx, *, args):
     """
         Accepts a team number and event code and returns the ranking of the
