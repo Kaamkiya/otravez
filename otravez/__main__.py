@@ -60,12 +60,24 @@ async def stat(ctx, *, args):
 
     if data.get("nickname", None) is None:
         await ctx.reply("No such team.")
+        return
+
+    years = tba.team_years(int(team_number))
+    year_ranges = list(to_ranges(years))
+    years_str = ""
+
+    for r in year_ranges:
+        if r[1] == r[0]:
+            years_str += f"{r[0]}, "
+            continue
+
+        years_str += f"{r[0]}-{r[1]}, "
 
     await ctx.reply(f"""
 name: {data.nickname}
 location: {data.city}, {data.state_prov and f"{data.state_prov}, "}{data.country}
 school: {data.school_name}
-rookie year: {data.rookie_year}
+years active: {years_str}
 website: {data.website}""")
 
 @bot.command()
