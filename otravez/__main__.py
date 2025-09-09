@@ -44,7 +44,7 @@ async def ping(ctx):
     """
     await ctx.send("pong")
 
-@bot.command()
+@bot.command(aliases=["info"])
 async def stat(ctx, *, args):
     """
         Returns basic facts about a team, like their name, website, and school.
