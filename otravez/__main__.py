@@ -27,16 +27,6 @@ bot = commands.Bot(command_prefix=";", intents=intents)
 async def on_ready():
     print(f"Yay bot has started! Named {bot.user.name}")
 
-@bot.event
-async def on_message(msg):
-    if msg.author == bot.user:
-        return
-
-    if "otra vez" in msg.content.lower():
-        await msg.channel.send(f"{msg.author.mention} oop I was summoned")
-
-    await bot.process_commands(msg)
-
 @bot.command()
 async def ping(ctx):
     """
