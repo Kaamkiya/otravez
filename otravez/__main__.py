@@ -45,8 +45,10 @@ async def stat(ctx, *, args):
         int(team_number)
     except ValueError:
         await ctx.reply("Invalid team number. Usage: ;stat [team]")
+        return
 
     data = tba.team("frc" + team_number)
+    sb_data = sb.get_team(int(team_number), fields=["record"])
 
     if data.get("nickname", None) is None:
         await ctx.reply("No such team.")
@@ -68,6 +70,7 @@ name: {data.nickname}
 location: {data.city}, {data.state_prov and f"{data.state_prov}, "}{data.country}
 school: {data.school_name}
 years active: {years_str}
+win/loss ratio: {round(sb_data["record"]["winrate"] * 100, 2)}%
 website: {data.website}""")
 
 @bot.command()
@@ -168,21 +171,6 @@ async def leaderboard(ctx, *, args):
         reply += f"\n{r["rank"]}. {r["team_key"][3:]} - winrate {round(rec["wins"] / total_matches * 100, 2)}%"
 
     await ctx.reply(reply)
-
-@bot.command()
-async def winrate(ctx, *, args):
-    """
-        Accepts a team number. Returns the win ratio over their lifetime.
-    """
-
-    try:
-        team = int(args.split()[0])
-    except ValueError:
-        await ctx.send("Invalid team number")
-
-    data = sb.get_team(team)
-
-    await ctx.send(f"{team} win/loss ratio: {round(data["record"]["winrate"] * 100, 2)}%")
 
 @bot.command()
 async def rankof(ctx, *, args):
