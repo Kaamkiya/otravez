@@ -131,17 +131,11 @@ async def years(ctx, *, args):
 @bot.command()
 async def epa(ctx, *, args):
     """
-        Accepts an event code and team number, and returns the position of the
-        given team on the event leaderboard.
+        Accepts an event code and team number, and optional year, and returns
+        the EPA and win rate of the team.
 
         For example:
-            ;epa onosh 8884
-        Would return:
-            1. team in first | epa
-            ...
-            14. 8884 | epa
-            ...
-            40. team in last | epa
+            ;epa 8884 onosh
     """
     team, ev_shortcode, *args = args.split()
     year = int(args[0]) if len(args) > 0 else datetime.now().year
@@ -156,9 +150,10 @@ async def epa(ctx, *, args):
     except:
         await ctx.send("Failed to get event data")
 
-    epa = data["epa"]["breakdown"]
+    epa = data["epa"]["breakdown"]["total_points"]
+    winrate = data["record"]["total"]["winrate"]
 
-    await ctx.reply(f"{data["team_name"]} at {data["event_name"]}: {epa["total_points"]}")
+    await ctx.reply(f"{team} at {data["event_name"]}\nEPA: {epa}\nWin rate: {round(winrate * 100, 2)}%")
 
 @bot.command()
 async def leaderboard(ctx, *, args):
