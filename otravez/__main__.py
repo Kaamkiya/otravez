@@ -34,8 +34,36 @@ async def ping(ctx):
     """
     await ctx.send("pong")
 
-@bot.command(aliases=["info"])
+@bot.command()
 async def stat(ctx, *, args):
+    team, *args = args.split()
+
+    try:
+        team = int(team)
+    except ValueError:
+        await ctx.reply("Invalid team number. Usage: ;stat [team]")
+        return
+
+    data = sb.get_team(team)
+
+    years = tba.team_years(team)
+    year_ranges = list(to_ranges(years))
+    years_str = ""
+
+    for r in year_ranges:
+        if r[1] == r[0]:
+            years_str += f"{r[0]}, "
+            continue
+
+        years_str += f"{r[0]}-{r[1]}, "
+
+    await ctx.reply(f"""{team} - {data["name"]}:
+years active: {years_str}
+win/loss ratio: {round(data["record"]["winrate"] * 100, 2)}%
+""")
+
+@bot.command()
+async def info(ctx, *, args):
     """
         Returns basic facts about a team, like their name, website, and school.
     """
@@ -48,29 +76,16 @@ async def stat(ctx, *, args):
         return
 
     data = tba.team("frc" + team_number)
-    sb_data = sb.get_team(int(team_number), fields=["record"])
 
     if data.get("nickname", None) is None:
         await ctx.reply("No such team.")
         return
 
-    years = tba.team_years(int(team_number))
-    year_ranges = list(to_ranges(years))
-    years_str = ""
-
-    for r in year_ranges:
-        if r[1] == r[0]:
-            years_str += f"{r[0]}, "
-            continue
-
-        years_str += f"{r[0]}-{r[1]}, "
-
     await ctx.reply(f"""
 name: {data.nickname}
 location: {data.city}, {data.state_prov and f"{data.state_prov}, "}{data.country}
 school: {data.school_name}
-years active: {years_str}
-win/loss ratio: {round(sb_data["record"]["winrate"] * 100, 2)}%
+rookie year: {data.rookie_year}
 website: {data.website}""")
 
 @bot.command()
