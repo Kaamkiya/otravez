@@ -9,12 +9,12 @@ from 8884.
 
 [Add it to your server!](https://discord.com/oauth2/authorize?client_id=1414072357445697576&permissions=580851377228864&integration_type=0&scope=bot)
 
+Use `;help` to get usage information for the bot.
+
 ## Todo
 
 ### Useful
-- [x] event stats (`;epa [event] 8884 [year]`)
 - [ ] competition year stats (`;year 8884`)
-- [x] win rate (`;wlratio 8884` = `1000 played, 670 won = 67% win rate`)
 - [ ] awards (`;awards 8884`)
 - [ ] alliance nr and result (`;ally [event] 8884` = `alliance 1 capt, 2056 & 1114, came 1st`)
 
