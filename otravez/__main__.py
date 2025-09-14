@@ -206,4 +206,55 @@ Quals: {data["qual_matches"]}
 Teams: {data["num_teams"]}
 {f"Streams: {data["video"]}" if data.get("video", None) is not None else ""}""")
 
+@bot.command()
+async def searchevent(ctx, *, args):
+    """
+        Accepts a year, country, state, district, week, and limit, and
+        returns a list of events.
+    """
+
+    args = args.split()
+    year = datetime.now().year
+    country = None
+    state = None
+    district = None
+    week = None
+    limit = 10
+
+    for arg in args:
+        try:
+            key, value = arg.split("=")
+        except:
+            await ctx.reply("Send values as key=value, eg year=2025")
+            return
+
+        value = value.strip()
+        match key.strip():
+            case "year": year = int(value)
+            case "country": country = value
+            case "state": state = value
+            case "district": district = value
+            case "week": week = int(value)
+            case "limit":
+                value = int(value)
+                if value > limit:
+                    await ctx.reply(f"Maximum limit: {limit}")
+                    return
+                limit = value
+
+    data = sb.get_events(year=year,
+                         country=country,
+                         state=state,
+                         district=district,
+                         week=week,
+                         limit=limit)
+
+    reply = ""
+
+    for event in data:
+        reply += f"\n{event["name"]} ({event["key"][4:]})"
+
+    await ctx.reply(reply)
+
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
