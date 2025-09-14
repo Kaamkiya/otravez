@@ -203,6 +203,7 @@ Type: {data["type"]}
 Week: {data["week"]}
 District: {data["district"]}
 Quals: {data["qual_matches"]}
-Teams: {data["num_teams"]}""")
+Teams: {data["num_teams"]}
+{f"Streams: {data["video"]}" if data.get("video", None) is not None else ""}""")
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
