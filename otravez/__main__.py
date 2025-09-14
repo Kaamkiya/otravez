@@ -151,12 +151,12 @@ async def epa(ctx, *, args):
     try:
         team = int(team)
     except ValueError:
-        await ctx.send("Invalid team number.")
+        await ctx.reply("Invalid team number.")
 
     try:
         data = sb.get_team_event(team, f"{year}{ev_shortcode}")
     except:
-        await ctx.send("Failed to get event data")
+        await ctx.reply("Failed to get event data")
 
     epa = data["epa"]["breakdown"]["total_points"]
     winrate = data["record"]["total"]["winrate"]
@@ -188,11 +188,21 @@ async def leaderboard(ctx, *, args):
     await ctx.reply(reply)
 
 @bot.command()
-async def rankof(ctx, *, args):
+async def event(ctx, *, args):
     """
-        Accepts a team number and event code and returns the ranking of the
-        team at the given event.
+        Accepts an event code and year and returns data about the event.
     """
-    pass
+
+    ev_code, *args = args.split()
+    year = int(args[0]) if len(args) > 0 else datetime.now().year
+
+    data = sb.get_event(f"{year}{ev_code}")
+
+    await ctx.reply(f"""{data["name"]}
+Type: {data["type"]}
+Week: {data["week"]}
+District: {data["district"]}
+Quals: {data["qual_matches"]}
+Teams: {data["num_teams"]}""")
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

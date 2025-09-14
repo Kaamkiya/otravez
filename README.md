@@ -12,7 +12,6 @@ from 8884.
 ## Todo
 
 ### Useful
-- [ ] lifetime stats (`;life 8884`)
 - [x] event stats (`;epa [event] 8884 [year]`)
 - [ ] competition year stats (`;year 8884`)
 - [x] win rate (`;wlratio 8884` = `1000 played, 670 won = 67% win rate`)
