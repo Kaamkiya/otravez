@@ -14,6 +14,8 @@ Use `;help` to get usage information for the bot.
 ## Todo
 
 ### Useful
+- [ ] Search for events (`;events [country=code] [region=region] [filters...=filters...]`)
+- [ ] Make leaderboard into teams and list attending teams if event has not started
 - [ ] competition year stats (`;year 8884`)
 - [ ] awards (`;awards 8884`)
 - [ ] alliance nr and result (`;ally [event] 8884` = `alliance 1 capt, 2056 & 1114, came 1st`)
