@@ -270,7 +270,11 @@ async def awards(ctx, *, args):
 
     reply = "Team Awards:"
 
-    for aw in awards:
+    for i, aw in enumerate(awards):
+        if len(reply) >= 1950:
+            reply += f"\n...and {len(awards)-i} more."
+            break
+
         reply += f"\n- {aw["name"]} ({aw["year"]})"
 
     await ctx.reply(reply)
