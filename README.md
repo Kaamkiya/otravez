@@ -17,7 +17,7 @@ Use `;help` to get usage information for the bot.
 - [ ] Make leaderboard into teams and list attending teams if event has not started
 - [ ] competition year stats (`;year 8884`)
 - [ ] awards (`;awards 8884`)
-- [ ] alliance nr and result (`;ally [event] 8884` = `alliance 1 capt, 2056 & 1114, came 1st`)
+- [ ] alliance nr and result (`;ally [event] 8884` = `alliance 1 capt, 9999 & 9990, came 1st`)
 
 ### Not too important
 - [ ] common alliance partners (`;friends 8884`)
