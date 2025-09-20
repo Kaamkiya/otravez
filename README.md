@@ -16,13 +16,12 @@ Use `;help` to get usage information for the bot.
 ### Useful
 - [ ] Make leaderboard into teams and list attending teams if event has not started
 - [ ] competition year stats (`;year 8884`)
-- [ ] awards (`;awards 8884`)
-- [ ] alliance nr and result (`;ally [event] 8884` = `alliance 1 capt, 9999 & 9990, came 1st`)
+- [ ] alliance number and result (`;ally [event] 8884` = `alliance 1 capt, 9999 & 9990, came 1st`)
 
 ### Not too important
 - [ ] common alliance partners (`;friends 8884`)
 - [ ] win and loss streak records (`;streak 8884`)
-- [ ] teams that havent been beaten by this team (`;hopeless 8884`)
+- [ ] teams that haven't been beaten by this team (`;hopeless 8884`)
 - [ ] teams that this team hasnt lost to (`;unbeaten 8884`)
 
 ## Thanks to

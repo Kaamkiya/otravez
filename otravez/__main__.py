@@ -256,5 +256,23 @@ async def searchevent(ctx, *, args):
 
     await ctx.reply(reply)
 
+@bot.command()
+async def awards(ctx, *, args):
+    """
+        Accepts a team number and returns the awards the team has won.
+    """
+
+    args = args.split()
+    team = int(args[0]) if len(args) > 0 else datetime.now().year
+    #year = int(args[0]) if len(args) > 0 else None
+
+    awards = tba.team_awards(team) #year=year)
+
+    reply = "Team Awards:"
+
+    for aw in awards:
+        reply += f"\n- {aw["name"]} ({aw["year"]})"
+
+    await ctx.reply(reply)
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
