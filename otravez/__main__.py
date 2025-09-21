@@ -263,10 +263,19 @@ async def awards(ctx, *, args):
         Accepts a team number and returns the awards the team has won.
     """
 
-    args = args.split()
-    team = int(args[0]) if len(args) > 0 else datetime.now().year
+    team, *args = args.split()
+    try:
+        team = int(team)
+    except ValueError:
+        await ctx.reply("Requires a team number")
+        return
 
-    awards = tba.team_awards(team)
+    year = int(args[0]) if len(args) > 0 else None
+
+    if year:
+        awards = tba.team_awards(team, year=year)
+    else:
+        awards = tba.team_awards(team)
 
     reply = "Team Awards:"
 
