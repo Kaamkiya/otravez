@@ -264,9 +264,8 @@ async def awards(ctx, *, args):
 
     args = args.split()
     team = int(args[0]) if len(args) > 0 else datetime.now().year
-    #year = int(args[0]) if len(args) > 0 else None
 
-    awards = tba.team_awards(team) #year=year)
+    awards = tba.team_awards(team)
 
     reply = "Team Awards:"
 
@@ -276,6 +275,33 @@ async def awards(ctx, *, args):
             break
 
         reply += f"\n- {aw["name"]} ({aw["year"]})"
+
+    await ctx.reply(reply)
+
+@bot.command()
+async def alliances(ctx, *, args):
+    """
+        Accepts an event code and year, and returns a list of alliances.
+    """
+
+    ev_shortcode, *args = args.split()
+    year = int(args[0]) if len(args) > 0 else datetime.now().year
+    
+    alliances = tba.event_alliances(f"{year}{ev_shortcode}")
+
+    reply = "Alliances:"
+
+    for a in alliances:
+        # Add the alliance to the reply, removing the "frc" at the beginning of
+        # each team's number. At the end, if the alliance won their event, add
+        # (won).
+        reply += f"\n{
+            a["name"]
+        }: {
+            ", ".join([p[3:] for p in a["picks"]])
+        }{
+            " (**won**)" if a["status"]["status"] == "won" else ""
+        }"
 
     await ctx.reply(reply)
 
