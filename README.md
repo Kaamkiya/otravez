@@ -7,6 +7,8 @@ Named because I was listening to Hey DJ by CNCO.
 Made with too much time that I should have been doing other things with, by Zia
 from 8884.
 
+Join the [dev server](https://discord.gg/Teu86pw6r4)!
+
 [Add it to your server!](https://discord.com/oauth2/authorize?client_id=1414072357445697576&permissions=580851377228864&integration_type=0&scope=bot)
 
 Use `;help` to get usage information for the bot.
