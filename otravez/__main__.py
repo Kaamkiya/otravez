@@ -88,7 +88,7 @@ school: {data.school_name}
 rookie year: {data.rookie_year}
 website: {data.website}""")
 
-@bot.command()
+@bot.command(aliases=["events"])
 async def comps(ctx, *, args):
     """
         Sends the competitions a given team attended in the given (or default)
@@ -204,7 +204,8 @@ Week: {data["week"]}
 District: {data["district"]}
 Quals: {data["qual_matches"]}
 Teams: {data["num_teams"]}
-{f"Streams: {data["video"]}" if data.get("video", None) is not None else ""}""")
+{f"Streams: <{data["video"]}>" if data.get("video", None) is not None else ""}
+FirstInspires: <https://frc-events.firstinspires.org/{year}/{ev_code}>""")
 
 @bot.command()
 async def searchevent(ctx, *, args):
