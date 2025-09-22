@@ -25,6 +25,14 @@ Use `;help` to get usage information for the bot.
 - [ ] teams that haven't been beaten by this team (`;hopeless 8884`)
 - [ ] teams that this team hasnt lost to (`;unbeaten 8884`)
 
+## Used by
+
+- Knight Owls 8884, in their discord server
+- The official Otra Vez development server
+
+If you use the bot, message me on Discord or make a pull request on Github and
+I'll add you to the list. Thanks for supporting the bot!
+
 ## Thanks to
 
 - [supercube08 (8884)](https://github.com/supercube08) for a ton of suggestions.
