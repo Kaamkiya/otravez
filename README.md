@@ -16,7 +16,7 @@ Use `;help` to get usage information for the bot.
 ## Todo
 
 ### Useful
-- [ ] Make leaderboard into teams and list attending teams if event has not started
+- [ ] add error handling and say something if the command fails
 - [ ] competition year stats (`;year 8884`)
 
 ### Not too important
