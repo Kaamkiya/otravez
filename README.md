@@ -17,9 +17,11 @@ Use `;help` to get usage information for the bot.
 
 ### Useful
 - [ ] add error handling and say something if the command fails
+- [ ] get match information
 - [ ] competition year stats (`;year 8884`)
 
 ### Not too important
+- [ ] get the weather for a given team
 - [ ] common alliance partners (`;friends 8884`)
 - [ ] win and loss streak records (`;streak 8884`)
 - [ ] teams that haven't been beaten by this team (`;hopeless 8884`)
