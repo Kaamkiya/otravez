@@ -21,6 +21,7 @@ intents.members = True
 tba = tbapy.TBA(os.getenv("TBA_AUTH_KEY"))
 sb = statbotics.Statbotics()
 
+bot_color = discord.Colour.from_str("#1e1e2e")
 bot = commands.Bot(command_prefix=";", intents=intents)
 
 @bot.event
@@ -32,6 +33,7 @@ async def ping(ctx):
     """
         Responds to a message starting with ";ping" by saying "pong".
     """
+    print(ctx)
     await ctx.send("pong")
 
 @bot.command()
@@ -50,17 +52,21 @@ async def stat(ctx, *, args):
     year_ranges = list(to_ranges(years))
     years_str = ""
 
-    for r in year_ranges:
+    for i, r in enumerate(year_ranges):
         if r[1] == r[0]:
-            years_str += f"{r[0]}, "
-            continue
+            years_str += f"{r[0]}"
+        else:
+            years_str += f"{r[0]}-{r[1]}"
 
-        years_str += f"{r[0]}-{r[1]}, "
+        if i != len(year_ranges) - 1:
+            years_str += ", "
 
-    await ctx.reply(f"""{team} - {data["name"]}:
-years active: {years_str}
-win/loss ratio: {round(data["record"]["winrate"] * 100, 2)}%
-""")
+    e = discord.Embed(color=bot_color,
+                      title=f"FRC Team {team} Stats")
+    e.add_field(name="Years", value=years_str)
+    e.add_field(name="Win/Loss Ratio", value=f"{round(data["record"]["winrate"] * 100, 2)}%")
+
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def info(ctx, *, args):
@@ -81,12 +87,17 @@ async def info(ctx, *, args):
         await ctx.reply("No such team.")
         return
 
-    await ctx.reply(f"""
-name: {data.nickname}
-location: {data.city}, {data.state_prov and f"{data.state_prov}, "}{data.country}
-school: {data.school_name}
-rookie year: {data.rookie_year}
-website: {data.website}""")
+    e = discord.Embed(color=bot_color,
+                      title=f"FIRST Robotics Team {team_number}",
+                      url=f"https://www.thebluealliance.com/team/{team_number}")
+    e.add_field(name="Name", value=data.nickname)
+    e.add_field(name="Location", value=f"{data.city}, {data.state_prov and f"{data.state_prov}, "}{data.country}")
+    e.add_field(name="School", value=data.school_name)
+    e.add_field(name="Rookie Year", value=data.rookie_year)
+    if data.website is not None and data.website != "":
+        e.add_field(name="Website", value=data.website)
+
+    await ctx.send(embed=e)
 
 @bot.command(aliases=["events"])
 async def comps(ctx, *, args):
@@ -280,7 +291,7 @@ async def awards(ctx, *, args):
     reply = "Team Awards:"
 
     for i, aw in enumerate(awards):
-        if len(reply) >= 1950:
+        if len(reply) >= 1000:
             reply += f"\n...and {len(awards)-i} more."
             break
 
@@ -315,4 +326,4 @@ async def alliances(ctx, *, args):
 
     await ctx.reply(reply)
 
-bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+bot.run(token, log_handler=handler, log_level=logging.INFO)
