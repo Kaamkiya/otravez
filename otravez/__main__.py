@@ -329,17 +329,19 @@ async def alliances(ctx, *, args):
     ev_shortcode, *args = args.split()
     year = int(args[0]) if len(args) > 0 else datetime.now().year
     
-    alliances = tba.event_alliances(f"{year}{ev_shortcode}")
+    try:
+        alliances = tba.event_alliances(f"{year}{ev_shortcode}")
+    except:
+        await ctx.send("No alliance data found")
+        return
 
     reply = ""
 
-    for a in alliances:
+    for i, a in enumerate(alliances):
         # Add the alliance to the reply, removing the "frc" at the beginning of
         # each team's number. At the end, if the alliance won their event, add
         # (won).
-        reply += f"\n- {
-            a["name"]
-        }: {
+        reply += f"\n{i}. {
             ", ".join([p[3:] for p in a["picks"]])
         }{
             " (**won**)" if a["status"]["status"] == "won" else ""
