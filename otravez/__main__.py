@@ -33,7 +33,6 @@ async def ping(ctx):
     """
         Responds to a message starting with ";ping" by saying "pong".
     """
-    print(ctx)
     await ctx.send("pong")
 
 @bot.command()
@@ -116,11 +115,11 @@ async def comps(ctx, *, args):
     except ValueError:
         await ctx.reply("Usage: ;comps [team] [optional: year]")
 
-    reply = f"{len(events)} in {year}:"
-    for ev in events:
-        reply += f"\n- {ev.short_name} ({ev.event_code})"
+    e = discord.Embed(color=bot_color,
+                      title=f"{team} attended {len(events)} events in {year}")
+    e.description = "\n".join([f"{ev.short_name} ({ev.event_code})" for ev in events])
 
-    await ctx.reply(reply)
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def years(ctx, *, args):
@@ -137,7 +136,7 @@ async def years(ctx, *, args):
 
     year_ranges = list(to_ranges(years))
 
-    reply = "Years:"
+    reply = ""
     for r in year_ranges:
         if r[1] == r[0]:
             reply += f"\n- {r[0]}"
@@ -145,7 +144,11 @@ async def years(ctx, *, args):
 
         reply += f"\n- {r[0]}-{r[1]}"
 
-    await ctx.reply(reply)
+    e = discord.Embed(color=bot_color,
+                      title=f"{team} was active in the following years:")
+    e.description = reply
+
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def epa(ctx, *, args):
@@ -169,10 +172,12 @@ async def epa(ctx, *, args):
     except:
         await ctx.reply("Failed to get event data")
 
-    epa = data["epa"]["breakdown"]["total_points"]
-    winrate = data["record"]["total"]["winrate"]
+    e = discord.Embed(color=bot_color,
+                      title=f"{team} at {data["event_name"]} in {year}")
+    e.add_field(name="EPA", value=data["epa"]["breakdown"]["total_points"])
+    e.add_field(name="Win Rate", value=f"{round(data["record"]["total"]["winrate"] * 100, 2)}%")
 
-    await ctx.reply(f"{team} at {data["event_name"]}\nEPA: {epa}\nWin rate: {round(winrate * 100, 2)}%")
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def leaderboard(ctx, *, args):
@@ -196,7 +201,11 @@ async def leaderboard(ctx, *, args):
         total_matches = rec["wins"] + rec["losses"] + rec["ties"]
         reply += f"\n{r["rank"]}. {r["team_key"][3:]} - winrate {round(rec["wins"] / total_matches * 100, 2)}%"
 
-    await ctx.reply(reply)
+    e = discord.Embed(color=bot_color,
+                      title="Rankings")
+    e.description = reply
+
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def event(ctx, *, args):
@@ -209,14 +218,19 @@ async def event(ctx, *, args):
 
     data = sb.get_event(f"{year}{ev_code}")
 
-    await ctx.reply(f"""{data["name"]}
-Type: {data["type"]}
-Week: {data["week"]}
-District: {data["district"]}
-Quals: {data["qual_matches"]}
-Teams: {data["num_teams"]}
-{f"Streams: <{data["video"]}>" if data.get("video", None) is not None else ""}
-FirstInspires: <https://frc-events.firstinspires.org/{year}/{ev_code}>""")
+    e = discord.Embed(color=bot_color,
+                      title=data["name"])
+    e.add_field(name="Type", value=data["type"])
+    e.add_field(name="Week", value=data["week"])
+    e.add_field(name="District", value=data["district"])
+    e.add_field(name="Quals", value=data["qual_matches"])
+    e.add_field(name="Teams", value=data["num_teams"])
+    e.add_field(name="FirstInspires", value=f"<https://frc-events.firstinspires.org/{year}/{ev_code}>")
+
+    if data.get("video", False):
+        e.add_field(name="Stream", value=f"<{data["video"]}>")
+
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def searchevent(ctx, *, args):
@@ -231,7 +245,7 @@ async def searchevent(ctx, *, args):
     state = None
     district = None
     week = None
-    limit = 10
+    limit = 30
 
     for arg in args:
         try:
@@ -254,19 +268,22 @@ async def searchevent(ctx, *, args):
                     return
                 limit = value
 
-    data = sb.get_events(year=year,
-                         country=country,
-                         state=state,
-                         district=district,
-                         week=week,
-                         limit=limit)
+    try:
+        data = sb.get_events(year=year,
+                             country=country,
+                             state=state,
+                             district=district,
+                             week=week,
+                             limit=limit)
+    except:
+        await ctx.reply("Failed to get events.")
+        return
 
-    reply = ""
+    e = discord.Embed(color=bot_color,
+                      title=f"Found {len(data)} events")
+    e.description = "\n".join([f"{ev["name"]} ({ev["key"][4:]})" for ev in data])
 
-    for event in data:
-        reply += f"\n{event["name"]} ({event["key"][4:]})"
-
-    await ctx.reply(reply)
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def awards(ctx, *, args):
@@ -288,7 +305,7 @@ async def awards(ctx, *, args):
     else:
         awards = tba.team_awards(team)
 
-    reply = "Team Awards:"
+    reply = ""
 
     for i, aw in enumerate(awards):
         if len(reply) >= 1000:
@@ -297,7 +314,11 @@ async def awards(ctx, *, args):
 
         reply += f"\n- {aw["name"]} ({aw["year"]})"
 
-    await ctx.reply(reply)
+    e = discord.Embed(color=bot_color,
+                      title=f"{team}'s awards {f"in {year}" if year else ""}")
+    e.description = reply
+
+    await ctx.reply(embed=e)
 
 @bot.command()
 async def alliances(ctx, *, args):
@@ -310,13 +331,13 @@ async def alliances(ctx, *, args):
     
     alliances = tba.event_alliances(f"{year}{ev_shortcode}")
 
-    reply = "Alliances:"
+    reply = ""
 
     for a in alliances:
         # Add the alliance to the reply, removing the "frc" at the beginning of
         # each team's number. At the end, if the alliance won their event, add
         # (won).
-        reply += f"\n{
+        reply += f"\n- {
             a["name"]
         }: {
             ", ".join([p[3:] for p in a["picks"]])
@@ -324,6 +345,9 @@ async def alliances(ctx, *, args):
             " (**won**)" if a["status"]["status"] == "won" else ""
         }"
 
-    await ctx.reply(reply)
+    e = discord.Embed(color=bot_color, title="Alliances")
+    e.description = reply
+
+    await ctx.reply(embed=e)
 
 bot.run(token, log_handler=handler, log_level=logging.INFO)
