@@ -104,7 +104,7 @@ class TBA(commands.Cog):
         await ctx.reply(embed=e)
 
     @commands.command(name="alliances")
-    async def alliances(self, ctx: commands.Context, event: str, year: int = datetime.now().year):
+    async def alliances(self, ctx: commands.Context, event: str, year: int = datetime.now().year) -> None:
         """
         Shows the list of alliances from a given event.
 
