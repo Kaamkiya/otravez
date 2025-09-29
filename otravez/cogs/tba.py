@@ -34,7 +34,7 @@ class TBA(commands.Cog):
 
         await ctx.send(embed=e)
 
-    @commands.command(name="comps", aliases=("event",))
+    @commands.command(name="comps", aliases=("events",))
     async def comps(self, ctx: commands.Context, team: int, year: int = datetime.now().year) -> None:
         """
         List the competitions a team attended.
