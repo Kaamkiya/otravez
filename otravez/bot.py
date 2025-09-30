@@ -1,3 +1,4 @@
+import datetime
 import os
 
 import discord
@@ -9,6 +10,8 @@ class OtraVez(commands.Bot):
     color = discord.Color.from_str("#ccaaff")
 
     def __init__(self) -> None:
+        self.starttime = datetime.datetime.now(datetime.UTC)
+
         intents = discord.Intents.default()
         intents.message_content = True
 
@@ -32,3 +35,10 @@ class OtraVez(commands.Bot):
                 except Exception as e:
                     print(f"Failed to load extension {extension}: {e}")
 
+    async def on_command_error(self, ctx: commands.Context, err: Exception) -> None:
+        if isinstance(err, commands.CommandOnCooldown):
+            await ctx.send(f"You can use this command again in {round(err.retry_after)} seconds.")
+        elif isinstance(err, commands.MissingRequiredArgument):
+            await ctx.send(str(err).capitalize())
+        else:
+            raise err
