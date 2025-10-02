@@ -6,3 +6,5 @@ deps: setup
 
 run:
 	.venv/bin/python3 otravez/
+
+urn: run # I cannot type so I made this

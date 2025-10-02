@@ -28,7 +28,7 @@ class OtraVez(commands.Bot):
 
     async def load_cogs(self) -> None:
         for file in os.listdir(f"{os.path.realpath(os.path.dirname(__file__))}/cogs"):
-            if file.endswith(".py"):
+            if file.endswith(".py") and file[0] != "_":
                 extension = file[:-3]
                 try:
                     await self.load_extension(f"cogs.{extension}")

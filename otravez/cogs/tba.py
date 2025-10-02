@@ -5,6 +5,8 @@ import discord
 import tbapy
 from discord.ext import commands
 
+from ._utils import to_ranges
+
 class TBA(commands.Cog):
     def __init__(self, bot: commands.Bot):
         super().__init__()
@@ -127,6 +129,31 @@ class TBA(commands.Cog):
             }"
 
         e = discord.Embed(color=self.bot.color, title="Alliances")
+        e.description = reply
+
+        await ctx.reply(embed=e)
+
+    @commands.command(name="years")
+    async def years(self, ctx: commands.Context, team: int) -> None:
+        """
+        Lists the years a given team was/is active.
+
+        :param team: The team whose active years to get.
+        """
+
+        years = self.tba.team_years(team)
+        year_ranges = list(to_ranges(years))
+
+        reply = ""
+        for r in year_ranges:
+            if r[1] == r[0]:
+                reply += f"\n- {r[0]}"
+                continue
+
+            reply += f"\n- {r[0]}-{r[1]}"
+
+        e = discord.Embed(color=self.bot.color,
+                          title=f"{team} was active in the following years:")
         e.description = reply
 
         await ctx.reply(embed=e)
