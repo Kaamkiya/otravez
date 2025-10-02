@@ -11,7 +11,7 @@ class Fun(commands.Cog):
         super().__init__()
         self.bot = bot
 
-    @commands.command(name="weather")
+    @commands.hybrid_command(name="weather")
     async def teamweather(self, ctx: commands.Context, team: int) -> None:
         """
         Fetches the weather for a given team's location.

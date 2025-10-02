@@ -12,7 +12,7 @@ class SB(commands.Cog):
         self.bot = bot
         self.sb = Statbotics()
 
-    @commands.command(name="epa")
+    @commands.hybrid_command(name="epa")
     async def epa(self, ctx: commands.Context, team: int, event: str, year: int = datetime.now().year) -> None:
         """
         Shows a team's EPA at a given event in a given year.

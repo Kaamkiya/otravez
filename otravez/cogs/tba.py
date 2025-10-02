@@ -15,7 +15,7 @@ class TBA(commands.Cog):
         self.key = os.getenv("TBA_AUTH_KEY")
         self.tba = tbapy.TBA(self.key)
 
-    @commands.command(name="team", aliases=("info",))
+    @commands.hybrid_command(name="team", aliases=("info",))
     async def team(self, ctx: commands.Context, team: int) -> None:
         """
         Get information about a team.
@@ -36,7 +36,7 @@ class TBA(commands.Cog):
 
         await ctx.send(embed=e)
 
-    @commands.command(name="comps", aliases=("events",))
+    @commands.hybrid_command(name="comps", aliases=("events",))
     async def comps(self, ctx: commands.Context, team: int, year: int = datetime.now().year) -> None:
         """
         List the competitions a team attended.
@@ -53,7 +53,7 @@ class TBA(commands.Cog):
 
         await ctx.reply(embed=e)
 
-    @commands.command(name="leaderboard")
+    @commands.hybrid_command(name="leaderboard")
     async def leaderboard(self, ctx: commands.Context, event: str, year: int = datetime.now().year) -> None:
         """
         Show the leaderboard from a given event.
@@ -76,7 +76,7 @@ class TBA(commands.Cog):
 
         await ctx.reply(embed=e)
 
-    @commands.command(name="awards", aliases=("acolades",))
+    @commands.hybrid_command(name="awards", aliases=("acolades",))
     async def awards(self, ctx: commands.Context, team: int, year: int | None = None) -> None:
         """
         Lists a team's awards.
@@ -105,7 +105,7 @@ class TBA(commands.Cog):
 
         await ctx.reply(embed=e)
 
-    @commands.command(name="alliances")
+    @commands.hybrid_command(name="alliances")
     async def alliances(self, ctx: commands.Context, event: str, year: int = datetime.now().year) -> None:
         """
         Shows the list of alliances from a given event.
@@ -133,7 +133,7 @@ class TBA(commands.Cog):
 
         await ctx.reply(embed=e)
 
-    @commands.command(name="years")
+    @commands.hybrid_command(name="years")
     async def years(self, ctx: commands.Context, team: int) -> None:
         """
         Lists the years a given team was/is active.
