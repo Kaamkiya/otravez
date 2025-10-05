@@ -41,4 +41,5 @@ class OtraVez(commands.Bot):
         elif isinstance(err, commands.MissingRequiredArgument):
             await ctx.send(str(err).capitalize())
         else:
+            await ctx.send(f"Whoopsie daisie something bad happened: \n{str(err)}")
             raise err

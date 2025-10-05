@@ -12,7 +12,7 @@ class SB(commands.Cog):
         self.bot = bot
         self.sb = Statbotics()
 
-    @commands.hybrid_command(name="epa")
+    @commands.hybrid_command(name="epa", with_app_command=True)
     async def epa(self, ctx: commands.Context, team: int, event: str, year: int = datetime.now().year) -> None:
         """
         Shows a team's EPA at a given event in a given year.
@@ -31,7 +31,7 @@ class SB(commands.Cog):
 
         await ctx.reply(embed=e)
 
-    @commands.command(name="event")
+    @commands.command(name="event", with_app_command=True)
     async def event(self, ctx: commands.Context, event: str, year: int = datetime.now().year) -> None:
         """
         Shows information about an event.
@@ -55,8 +55,6 @@ class SB(commands.Cog):
             e.add_field(name="Stream", value=f"<{data["video"]}>")
 
         await ctx.reply(embed=e)
-
-
 
 async def setup(bot):
     """Adds the cog to the bot."""

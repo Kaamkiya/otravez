@@ -10,7 +10,7 @@ class General(commands.Cog):
         self.bot = bot
 
     @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.hybrid_command(name="ping")
+    @commands.hybrid_command(name="ping", with_app_command=True)
     async def ping(self, ctx: commands.Context) -> None:
         """Checks if the robot is online and calculates response time."""
 
@@ -20,7 +20,7 @@ class General(commands.Cog):
         await res.edit(content=res.content + f" {round(delay.microseconds / 1000)}ms")
 
     @commands.cooldown(1, 60, commands.BucketType.user)
-    @commands.hybrid_command(name="botinfo")
+    @commands.hybrid_command(name="botinfo", with_app_command=True)
     async def botinfo(self, ctx: commands.Context) -> None:
         uptime = datetime.datetime.now(datetime.UTC) - self.bot.starttime
         uptime = round(uptime.total_seconds())
